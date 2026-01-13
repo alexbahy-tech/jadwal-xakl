@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jadwal Pelajaran Kelas X Akuntansi</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --bg-gradient-1: #667eea;
+            --bg-gradient-2: #764ba2;
+            --white: #ffffff;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-600: #475569;
+            --gray-900: #0f172a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-gradient-1) 0%, var(--bg-gradient-2) 100%);
+            min-height: 100vh;
+            padding: 20px;
+            background-attachment: fixed;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header dengan efek glassmorphism */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        header h1 {
+            color: var(--white);
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        header p {
+            color: var(--white);
+            font-size: 1.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Info Bar */
+        .info-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 25px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .info-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .info-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        .info-icon.time {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .info-icon.day {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .info-icon.subject {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .info-text h3 {
+            font-size: 0.8rem;
+            color: var(--gray-600);
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .info-text p {
+            font-size: 1.1rem;
+            color: var(--gray-900);
+            font-weight: 700;
+        }
+
+        /* Controls dengan desain modern */
+        .controls {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        select, input {
+            padding: 14px 22px;
+            border-radius: 14px;
+            border: 2px solid rgba(255,255,255,0.3);
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-900);
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        select:focus, input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 14px 24px;
+            border-radius: 14px;
+            border: none;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .btn-exit {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .btn-reset {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: white;
+        }
+
+        .btn-print {
+            background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        /* Grid dengan animasi */
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .day-column {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .day-column:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.18);
+        }
+
+        /* Header hari dengan gradient berbeda */
+        .day-header {
+            text-align: center;
+            padding: 18px;
+            color: white;
+            font-weight: 800;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .day-header.senin { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .day-header.selasa { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .day-header.rabu { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .day-header.kamis { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        .day-header.jumat { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+
+        .day-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: slideLight 2s infinite;
+        }
+
+        @keyframes slideLight {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .day-content {
+            padding: 18px;
+        }
+
+        /* Card dengan desain modern */
+        .card {
+            background: linear-gradient(135deg, #f6f8fb 0%, #ffffff 100%);
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 14px;
+            border-left: 5px solid var(--primary);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+
+        .card:hover::before {
+            width: 100%;
+            opacity: 0.05;
+        }
+
+        .card:hover {
+            transform: translateX(8px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+
+        .card.istirahat {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left-color: var(--accent);
+        }
+
+        .card.istirahat .time,
+        .card.istirahat .subject {
+            color: var(--gray-900);
+        }
+
+        .card.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-left-color: var(--accent);
+            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 8px 30px rgba(99, 102, 241, 0.4); }
+            50% { box-shadow: 0 8px 40px rgba(99, 102, 241, 0.6); }
+        }
+
+        .card.active .time,
+        .card.active .subject,
+        .card.active .teacher {
+            color: white;
+        }
+
+        .time {
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-now {
+            background: var(--accent);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.65rem;
+            font-weight: 800;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .subject {
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 6px;
+            line-height: 1.4;
+            font-size: 1.05rem;
+        }
+
+        .teacher {
+            font-size: 0.9rem;
+            color: var(--gray-600);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Stats Summary */
+        .stats-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: scale(1.05);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--gray-600);
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 { font-size: 1.4rem; }
+            header p { font-size: 1.2rem; }
+            .schedule-grid {
+                grid-template-columns: 1fr;
+            }
+            .controls {
+                flex-direction: column;
+            }
+            .btn-group {
+                flex-direction: column;
+                width: 100%;
+            }
+            .btn {
+                width: 100%;
+            }
+        }
+
+        /* Dark mode toggle */
+        .theme-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1) rotate(180deg);
+        }
+
+        /* Loading animation */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255,255,255,0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>📚 Jadwal Pelajaran Kelas X Akuntansi dan Keuangan Lembaga</h1>
+        <p>SMK NEGERI 1 MALUKU TENGAH</p>
+    </header>
+
+    <!-- Info Bar Real-time -->
+    <div class="info-bar">
+        <div class="info-card">
+            <div class="info-icon time">🕐</div>
+            <div class="info-text">
+                <h3>Waktu Sekarang</h3>
+                <p id="current-time">--:--</p>
+            </div>
+        </div>
+        <div class="info-card">
+            <div class="info-icon day">📅</div>
+            <div class="info-text">
+                <h3>Hari Ini</h3>
+                <p id="current-day">---</p>
+            </div>
+        </div>
+        <div class="info-card">
+            <div class="info-icon subject">📖</div>
+            <div class="info-text">
+                <h3>Pelajaran Aktif</h3>
+                <p id="active-subject">Tidak ada</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Summary -->
+    <div class="stats-summary">
+        <div class="stat-card">
+            <div class="stat-number" id="total-classes">0</div>
+            <div class="stat-label">Total Pelajaran</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="total-teachers">0</div>
+            <div class="stat-label">Total Guru</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="today-classes">0</div>
+            <div class="stat-label">Pelajaran Hari Ini</div>
+        </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+        <select id="filter-day">
+            <option value="all">📅 Semua Hari</option>
+            <option value="Sen">Senin</option>
+            <option value="Sel">Selasa</option>
+            <option value="Rab">Rabu</option>
+            <option value="Kam">Kamis</option>
+            <option value="Jum">Jumat</option>
+        </select>
+        
+        <input type="text" id="search-input" placeholder="🔍 Cari Guru/Mata Pelajaran...">
+
+        <div class="btn-group">
+            <button class="btn btn-reset" onclick="resetFilters()">🔄 Reset</button>
+            <button class="btn btn-print" onclick="window.print()">🖨️ Cetak</button>
+            <button class="btn btn-exit" onclick="alert('Terima kasih telah menggunakan aplikasi jadwal!')">🚪 Keluar</button>
+        </div>
+    </div>
+
+    <div id="grid-container" class="schedule-grid"></div>
+</div>
+
+<button class="theme-toggle" onclick="alert('Fitur dark mode akan segera hadir!')">🌙</button>
+
+<script>
+const rawData = {
+    "schedule": [
+        { "day": "Sen", "time": "07:30 - 08:50", "subject": "Informatika", "teacher": "Axl Denis Hallatu, S.Kom" },
+        { "day": "Sen", "time": "08:50 - 10:10", "subject": "Projek IPAS", "teacher": "H.S. Kapressy, S.Pd., M.Pd" },
+        { "day": "Sen", "time": "10:10 - 10:30", "subject": "ISTIRAHAT 1", "teacher": "-", "type": "break" },
+        { "day": "Sen", "time": "10:30 - 11:10", "subject": "Projek IPAS", "teacher": "H.S. Kapressy, S.Pd., M.Pd" },
+        { "day": "Sen", "time": "11:10 - 12:30", "subject": "Bahasa Indonesia", "teacher": "Wa Mulina, S.Pd" },
+        { "day": "Sen", "time": "13:10 - 13:30", "subject": "ISTIRAHAT 2", "teacher": "-", "type": "break" },
+        { "day": "Sen", "time": "13:30 - 15:30", "subject": "Kokurikuler PJBL", "teacher": "A. Bahy, S.Pd., M.Pd" },
+
+        { "day": "Sel", "time": "07:30 - 08:50", "subject": "Pendidikan Pancasila", "teacher": "E.A. Wacanno, S.Pd" },
+        { "day": "Sel", "time": "08:50 - 10:10", "subject": "Penjasorkes", "teacher": "O.A. Lawalata, S.Pd" },
+        { "day": "Sel", "time": "10:10 - 10:30", "subject": "ISTIRAHAT 1", "teacher": "-", "type": "break" },
+        { "day": "Sel", "time": "10:30 - 11:10", "subject": "Penjasorkes", "teacher": "O.A. Lawalata, S.Pd" },
+        { "day": "Sel", "time": "11:10 - 13:10", "subject": "Dasar Keahlian AKL", "teacher": "Diwanti Wally, A.Md" },
+        { "day": "Sel", "time": "13:10 - 13:30", "subject": "ISTIRAHAT 2", "teacher": "-", "type": "break" },
+        { "day": "Sel", "time": "13:30 - 15:30", "subject": "Matematika", "teacher": "T.M.A. Kappuw, S.Pd" },
+
+        { "day": "Rab", "time": "07:30 - 08:50", "subject": "Projek IPAS", "teacher": "H.S. Kapressy, S.Pd., M.Pd" },
+        { "day": "Rab", "time": "08:50 - 10:10", "subject": "Seni Budaya", "teacher": "R. A. Ririnena, SM.Gr" },
+        { "day": "Rab", "time": "10:10 - 10:30", "subject": "ISTIRAHAT 1", "teacher": "-", "type": "break" },
+        { "day": "Rab", "time": "10:30 - 11:10", "subject": "Seni Budaya", "teacher": "R. A. Ririnena, SM.Gr" },
+        { "day": "Rab", "time": "11:10 - 13:10", "subject": "Dasar Keahlian AKL", "teacher": "M. Kunu, S.Pd" },
+        { "day": "Rab", "time": "13:10 - 13:30", "subject": "ISTIRAHAT 2", "teacher": "-", "type": "break" },
+        { "day": "Rab", "time": "13:30 - 15:30", "subject": "Bahasa Inggris", "teacher": "A. Bahy, S.Pd., M.Pd" },
+
+        { "day": "Kam", "time": "07:30 - 08:50", "subject": "Kokurikuler PJBL", "teacher": "A. Bahy, S.Pd., M.Pd" },
+        { "day": "Kam", "time": "08:50 - 10:10", "subject": "Dasar Keahlian AKL", "teacher": "Diwanti Wally, A.Md" },
+        { "day": "Kam", "time": "10:10 - 10:30", "subject": "ISTIRAHAT 1", "teacher": "-", "type": "break" },
+        { "day": "Kam", "time": "10:30 - 11:10", "subject": "Dasar Keahlian AKL", "teacher": "Diwanti Wally, A.Md" },
+        { "day": "Kam", "time": "11:10 - 13:10", "subject": "Pend. Agama", "teacher": "B. Tahidi / M. Matinaheruw" },
+        { "day": "Kam", "time": "13:10 - 13:30", "subject": "ISTIRAHAT 2", "teacher": "-", "type": "break" },
+        { "day": "Kam", "time": "13:30 - 15:30", "subject": "Membatik", "teacher": "J. Resiloy" },
+
+        { "day": "Jum", "time": "07:30 - 08:50", "subject": "Sejarah", "teacher": "V. Ruhukail, S.Pd" },
+        { "day": "Jum", "time": "08:50 - 10:10", "subject": "Dasar Keahlian AKL", "teacher": "M. Kunu, S.Pd" },
+        { "day": "Jum", "time": "10:10 - 10:30", "subject": "ISTIRAHAT", "teacher": "-", "type": "break" },
+        { "day": "Jum", "time": "10:30 - 11:10", "subject": "Dasar Keahlian AKL", "teacher": "M. Kunu, S.Pd" }
+    ]
+};
+
+const container = document.getElementById('grid-container');
+const dayFilter = document.getElementById('filter-day');
+const searchInput = document.getElementById('search-input');
+
+function updateClock() {
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const dayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+    const dayStr = dayNames[now.getDay()];
+    
+    document.getElementById('current-time').textContent = timeStr;
+    document.getElementById('current-day').textContent = dayStr;
+}
+
+function updateStats() {
+    const totalClasses = rawData.schedule.filter(i => i.type !== 'break').length;
+    const uniqueTeachers = new Set(rawData.schedule.filter(i => i.type !== 'break').map(i => i.teacher)).size;
+    
+    const daysMap = { 0: 'Min', 1: 'Sen', 2: 'Sel', 3: 'Rab', 4: 'Kam', 5: 'Jum', 6: 'Sab' };
+    const today = daysMap[new Date().getDay()];
+    const todayClasses = rawData.schedule.filter(i => i.day === today && i.type !== 'break').length;
+    
+    document.getElementById('total-classes').textContent = totalClasses;
+    document.getElementById('total-teachers').textContent = uniqueTeachers;
+    document.getElementById('today-classes').textContent = todayClasses;
+}
+
+function checkActive(timeStr, dayAbbr) {
+    const now = new Date();
+    const daysMap = { 'Min': 0, 'Sen': 1, 'Sel': 2, 'Rab': 3, 'Kam': 4, 'Jum': 5, 'Sab': 6 };
+    if (now.getDay() !== daysMap[dayAbbr]) return false;
+    const [start, end] = timeStr.split(' - ');
+    const parseTime = (t) => {
+        const [h, m] = t.split(':').map(Number);
+        return h * 60 + m;
+    };
+    const current = now.getHours() * 60 + now.getMinutes();
+    return current >= parseTime(start) && current <= parseTime(end);
+}
+
+function updateActiveSubject() {
+    const now = new Date();
+    const daysMap = { 0: 'Min', 1: 'Sen', 2: 'Sel', 3: 'Rab', 4: 'Kam', 5: 'Jum', 6: 'Sab' };
+    const today = daysMap[now.getDay()];
+    
+    const activeClass = rawData.schedule.find(item => 
+        item.day === today && checkActive(item.time, item.day) && item.type !== 'break'
+    );
+    
+    document.getElementById('active-subject').textContent = 
+        activeClass ? activeClass.subject : 'Tidak ada';
+}
+
+function render() {
+    container.innerHTML = '';
+    const selectedDay = dayFilter.value;
+    const search = searchInput.value.toLowerCase();
+    const daysOrder = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum'];
+    const daysToShow = selectedDay === 'all' ? daysOrder : [selectedDay];
+
+    daysToShow.forEach(d => {
+        const dayNameFull = { 
+            Sen: 'Senin', 
+            Sel: 'Selasa', 
+            Rab: 'Rabu', 
+            Kam: 'Kamis', 
+            Jum: 'Jumat' 
+        }[d];
+        
+        const dayClass = dayNameFull.toLowerCase();
+        
+        const dayItems = rawData.schedule.filter(i => 
+            i.day === d && 
+            (i.subject.toLowerCase().includes(search) || i.teacher.toLowerCase().includes(search))
+        );
+
+        if (dayItems.length > 0) {
+            const col = document.createElement('div');
+            col.className = 'day-column';
+            col.innerHTML = `<div class="day-header ${dayClass}">${dayNameFull}</div><div class="day-content"></div>`;
+            const contentDiv = col.querySelector('.day-content');
+
+            dayItems.forEach(item => {
+                const isActive = checkActive(item.time, item.day);
+                const isBreak = item.type === 'break';
+                const card = document.createElement('div');
+                card.className = `card ${isBreak ? 'istirahat' : ''} ${isActive ? 'active' : ''}`;
+                card.innerHTML = `
+                    <span class="time">
+                        🕒 ${item.time} 
+                        ${isActive ? '<span class="badge-now">SEKARANG</span>' : ''}
+                    </span>
+                    <div class="subject">${item.subject}</div>
+                    ${!isBreak ? `<div class="teacher">👤 ${item.teacher}</div>` : ''}
+                `;
+                contentDiv.appendChild(card);
+            });
+            container.appendChild(col);
+        }
+    });
+}
+
+function resetFilters() {
+    dayFilter.value = 'all';
+    searchInput.value = '';
+    render();
+}
+
+// Initialize
+updateClock();
+updateStats();
+updateActiveSubject();
+render();
+
+// Update every second
+setInterval(() => {
+    updateClock();
+    updateActiveSubject();
+}, 1000);
+
+// Update schedule every 30 seconds
+setInterval(render, 30000);
+
+// Event listeners
+dayFilter.addEventListener('change', render);
+searchInput.addEventListener('input', render);
+
+// Print styles
+const style = document.createElement('style');
+style.textContent = `
+    @media print {
+        body {
+            background: white;
+            padding: 10px;
+        }
+        .controls, .theme-toggle, .info-bar, .stats-summary {
+            display: none !important;
+        }
+        .day-column {
+            break-inside: avoid;
+            box-shadow: none;
+            border: 1px solid #ddd;
+        }
+        .card {
+            box-shadow: none;
+        }
+    }
+`;
+document.head.appendChild(style);
+</script>
+</body>
+</html>
